@@ -1,27 +1,41 @@
 package model;
 
+import java.util.Collection;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="cliente")
 public class Cliente {
 
+	
+	@OneToMany (mappedBy="cliente",
+			targetEntity=Pedido.class,
+			cascade=CascadeType.ALL)
+	private Collection pedido;
+	
 	@Id
-	private int id;
+	private int idCliente;
 	@Column
 	private String nome;
 	@Column
 	private String cpf;
 	@Column
 	private String rg;
-	public int getId() {
-		return id;
+	
+	
+	
+	
+	public int getIdCliente() {
+		return idCliente;
 	}
-	public void setId(int id) {
-		this.id = id;
+	public void setIdCliente(int idCliente) {
+		this.idCliente = idCliente;
 	}
 	public String getNome() {
 		return nome;

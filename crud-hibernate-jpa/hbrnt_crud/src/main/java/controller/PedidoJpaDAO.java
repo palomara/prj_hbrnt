@@ -6,23 +6,23 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
+import model.Pedido;
 import model.Cliente;
 
-public class ClienteJpaDAO {
+public class PedidoJpaDAO {
 
-	private static ClienteJpaDAO instance;
+	private static PedidoJpaDAO instance;
 	protected EntityManager entityManager;
 	
-	public static ClienteJpaDAO getInstance() {
+	public static PedidoJpaDAO getInstance() {
 		if (instance == null) {
-			instance = new ClienteJpaDAO();
-			
+			instance = new PedidoJpaDAO();
 		}
 		
 		return instance;
 	}
 	
-	private ClienteJpaDAO() {
+	private PedidoJpaDAO() {
 		entityManager = getEntityManager();
 	}
 	
@@ -35,20 +35,19 @@ public class ClienteJpaDAO {
 		return entityManager;
 	}
 	
-	public Cliente getById (final int idCliente) {
-		return entityManager.find(Cliente.class, idCliente);
-		
+	public Pedido getById (final int idPedido) {
+		return entityManager.find(Pedido.class, idPedido);
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Cliente> findAll() {
-		return entityManager.createQuery("FROM" + Cliente.class.getName()).getResultList();
+	public List<Pedido> findAll() {
+		return entityManager.createQuery("FROM" + Pedido.class.getName()).getResultList();
 	}
 	
-	public void persist(Cliente cliente) {
+	public void persist (Pedido pedido) {
 		try {
 			entityManager.getTransaction().begin();
-			entityManager.persist(cliente);
+			entityManager.persist(pedido);
 			entityManager.getTransaction().commit();
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -56,36 +55,42 @@ public class ClienteJpaDAO {
 		}
 	}
 	
-	public void merge (Cliente cliente) {
+	public void merge (Pedido pedido) {
 		try {
 			entityManager.getTransaction().begin();
-			entityManager.merge(cliente);
+			entityManager.merge(pedido);
 			entityManager.getTransaction().commit();
-		} catch (Exception ex) {
+		}
+		catch (Exception ex){
 			ex.printStackTrace();
 			entityManager.getTransaction().rollback();
+			
 		}
 	}
 	
-	public void remove (Cliente cliente) {
+	public void remove (Pedido pedido) {
 		try {
 			entityManager.getTransaction().begin();
-			cliente = entityManager.find(Cliente.class, cliente.getIdCliente());
-			entityManager.remove(cliente);
+			pedido = entityManager.find(Pedido.class, pedido.getIdPedido());
+			entityManager.remove(pedido);
 			entityManager.getTransaction().commit();
-		} catch (Exception ex) {
+			
+		}
+		catch (Exception ex) {
 			ex.printStackTrace();
 			entityManager.getTransaction().rollback();
 		}
-	}
 		
-		public void removeById (final int idCliente) {
-			try {
-				Cliente cliente = getById(idCliente);
-				remove(cliente);
-			} catch (Exception ex) {
-				ex.printStackTrace();
-			}
-		}
+	}
 	
+	public void removeById (final int idPedido) {
+		try {
+			Pedido pedido = getById(idPedido);
+			remove(pedido);
+		}
+		
+		catch (Exception ex) {
+			ex.printStackTrace();
+		}
+	}
 }
